@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Alert } from "antd";
+
+import InputForm from "./components/InputForm/InputForm";
+import InputContainer from "./components/InputContainer/InputContainer";
+import useFetchRepos from "./hooks/useFetchRepos";
+import TableContainer from "./components/TableContainer/TableContainer";
+import Header from "./components/Header/Header";
 
 function App() {
+  const { userInfo, repos, isLoading, error, fetchRepoData } = useFetchRepos();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <InputContainer>
+        <InputForm onSearch={fetchRepoData} isLoading={isLoading} />
+
+        <Alert
+          message={error}
+          type="error"
+          className={`AlertContainer ${error ? "AlertVisible" : ""}`}
+        />
+      </InputContainer>
+      <TableContainer repos={repos} isLoading={isLoading} userInfo={userInfo} />
     </div>
   );
 }
